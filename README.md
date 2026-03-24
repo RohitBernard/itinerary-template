@@ -8,8 +8,10 @@ A reusable interactive travel itinerary UI. Add a new trip by dropping a JSON fi
 
 ## Adding a new trip
 
-1. Create `your-city.json` following the schema below and add it to the private `my-trips` repo
-2. Commit and push — GitHub Action auto-updates this repo → Cloudflare Pages rebuilds automatically
+Trip JSON files are loaded from the `trips/` directory. The simplest setup is to drop files directly in `trips/`. If you want to keep your trip data private, point `trips/` at a private repo as a git submodule.
+
+1. Create `your-city.json` following the schema below and place it in `trips/`
+2. Open `?trip=your-city` in the browser
 
 ---
 
