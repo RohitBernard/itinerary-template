@@ -396,7 +396,7 @@
 <div id="error-state" style="display:none">
   <div class="error-state">
     <h2>Trip not found</h2>
-    <p id="error-message">No trip specified. Try <code>?trip=nola</code></p>
+    <p id="error-message">No trip specified. Try <code>?trip=sf</code></p>
   </div>
 </div>
 
@@ -652,12 +652,12 @@ function init(data) {
 // Bootstrap
 let trip = new URLSearchParams(location.search).get('trip');
 if (!trip) {
-  // Extract from hostname when served via subdomain (e.g. nola-itinerary.rohitbernard.com)
+  // Extract from hostname when served via subdomain (e.g. sf-itinerary.rohitbernard.com)
   const sub = location.hostname.split('.')[0];
   if (sub.endsWith('-itinerary')) trip = sub.replace('-itinerary', '');
 }
 if (!trip) {
-  showError('No trip specified. Try adding ?trip=nola to the URL.');
+  showError('No trip specified. Try adding ?trip=sf to the URL.');
 } else {
   fetch(`trips/${trip}.json`)
     .then(r => {
