@@ -664,6 +664,13 @@ if (!trip) {
       if (!r.ok) throw new Error('not found');
       return r.json();
     })
+    .catch(() =>
+      fetch(`examples/${trip}.json`)
+        .then(r => {
+          if (!r.ok) throw new Error('not found');
+          return r.json();
+        })
+    )
     .then(init)
     .catch(() => showError(`Trip "${trip}" not found.`));
 }

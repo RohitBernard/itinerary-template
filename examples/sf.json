@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "title": "San Francisco",
+    "subtitle": "2-Day Itinerary · 12 stops across 4 neighbourhoods",
+    "icon": "🌉"
+  },
+  "days": {
+    "1": {
+      "label": "DAY 1",
+      "title": "The Waterfront & North Beach",
+      "desc": "Start bayside at the Ferry Building, then wind through the bohemian streets of North Beach — the city's Italian heart and literary soul.",
+      "routeUrl": "https://www.google.com/maps/dir/Ferry+Building+Marketplace,+San+Francisco/Exploratorium,+San+Francisco/Coit+Tower,+San+Francisco/City+Lights+Booksellers,+San+Francisco/Vesuvio+Saloon,+San+Francisco",
+      "center": { "lat": 37.797, "lng": -122.406 },
+      "zoom": 14,
+      "sections": [
+        {
+          "label": "Morning",
+          "night": false,
+          "stops": [
+            {
+              "name": "Ferry Building Marketplace",
+              "type": "Market",
+              "rating": 4.7,
+              "reviews": "12,408",
+              "desc": "The city's greatest food hall, right on the Embarcadero. Grab a Blue Bottle cortado, shuck some oysters at Hog Island, and pick up whatever looks best at the Saturday farmers market.",
+              "emoji": "🦪",
+              "lat": 37.7956,
+              "lng": -122.3935,
+              "place_id": null,
+              "tip": "Go on a Saturday morning for the outdoor farmers market — it wraps around the entire building."
+            },
+            {
+              "name": "Exploratorium",
+              "type": "Museum",
+              "rating": 4.6,
+              "reviews": "8,821",
+              "desc": "A hands-on science museum unlike any other. Even if you think museums aren't your thing, this one will change your mind — every exhibit is designed to be touched, broken, and figured out.",
+              "emoji": "🔬",
+              "lat": 37.7964,
+              "lng": -122.3977,
+              "place_id": null,
+              "tip": null
+            }
+          ]
+        },
+        {
+          "label": "Afternoon",
+          "night": false,
+          "stops": [
+            {
+              "name": "Coit Tower",
+              "type": "Landmark",
+              "rating": 4.6,
+              "reviews": "22,133",
+              "desc": "Take the staircase hike up Telegraph Hill — past wild parrots nesting in the trees — to reach this Art Deco tower with sweeping bay views. Skip the elevator and walk the Filbert Steps instead.",
+              "emoji": "🗼",
+              "lat": 37.8024,
+              "lng": -122.4058,
+              "place_id": null,
+              "tip": "Look for the wild parrots of Telegraph Hill on the Filbert Steps up — they're resident and very loud."
+            },
+            {
+              "name": "City Lights Booksellers",
+              "type": "Bookstore",
+              "rating": 4.7,
+              "reviews": "5,644",
+              "desc": "The legendary Beat Generation bookstore, still independently owned since 1953. Browse the poetry room upstairs — there's a dedicated corner for the Beats with floor-to-ceiling shelves and a window seat.",
+              "emoji": "📚",
+              "lat": 37.7978,
+              "lng": -122.4066,
+              "place_id": null,
+              "tip": null
+            }
+          ]
+        },
+        {
+          "label": "Night Out",
+          "night": true,
+          "stops": [
+            {
+              "name": "Vesuvio Saloon",
+              "type": "Bar",
+              "rating": 4.6,
+              "reviews": "3,821",
+              "desc": "Jack Kerouac drank here. Dylan Thomas drank here. You should drink here. The two-floor saloon next to City Lights hasn't changed much since the 1950s — order a Kerouac and soak it in.",
+              "emoji": "🍺",
+              "lat": 37.7979,
+              "lng": -122.4064,
+              "place_id": null,
+              "tip": "The upstairs balcony overlooking Columbus Ave is the best seat in the house."
+            },
+            {
+              "name": "Tony's Pizza Napoletana",
+              "type": "Restaurant",
+              "rating": 4.5,
+              "reviews": "6,012",
+              "desc": "Multiple-time World Pizza Champion Tony Gemignani runs this North Beach institution. The Neapolitan pies are cooked in a wood-fired oven imported from Naples — worth every minute of the wait.",
+              "emoji": "🍕",
+              "lat": 37.7998,
+              "lng": -122.4077,
+              "place_id": null,
+              "tip": "Reservations are worth it on weekends. The Detroit-style square is a sleeper hit."
+            }
+          ]
+        }
+      ],
+      "alt": {
+        "label": "Prefer to skip the museum?",
+        "text": "Walk the Embarcadero promenade south toward the Bay Bridge instead — great views, free, and about 30 minutes at a stroll."
+      }
+    },
+    "2": {
+      "label": "DAY 2",
+      "title": "The Mission & The Presidio",
+      "desc": "The best pastries in the city and colorful murals in the Mission, then wide open coastal trails and the Golden Gate in the Presidio.",
+      "routeUrl": "https://www.google.com/maps/dir/Tartine+Bakery,+San+Francisco/Dolores+Park,+San+Francisco/Golden+Gate+Bridge,+San+Francisco/Lands+End+Trail,+San+Francisco",
+      "center": { "lat": 37.780, "lng": -122.445 },
+      "zoom": 13,
+      "sections": [
+        {
+          "label": "Morning",
+          "night": false,
+          "stops": [
+            {
+              "name": "Tartine Bakery",
+              "type": "Bakery",
+              "rating": 4.4,
+              "reviews": "9,187",
+              "desc": "The country bread and morning bun are worth any line. Chad Robertson's sourdough loaves come out at 5pm, but the pastries in the morning are equally legendary — get there before 9am to beat the queue.",
+              "emoji": "🥐",
+              "lat": 37.7613,
+              "lng": -122.4241,
+              "place_id": null,
+              "tip": "The morning bun — orange zest, cinnamon, sugar — is the move. Get two."
+            },
+            {
+              "name": "Dolores Park",
+              "type": "Park",
+              "rating": 4.6,
+              "reviews": "14,302",
+              "desc": "The Mission's living room. On a sunny morning it fills with locals, dogs, and a surprising number of people who somehow have full cocktails. Climb to the top of the hill for the best free panorama of downtown.",
+              "emoji": "🌳",
+              "lat": 37.7596,
+              "lng": -122.4269,
+              "place_id": null,
+              "tip": null
+            }
+          ]
+        },
+        {
+          "label": "Afternoon",
+          "night": false,
+          "stops": [
+            {
+              "name": "Golden Gate Bridge",
+              "type": "Landmark",
+              "rating": 4.8,
+              "reviews": "98,441",
+              "desc": "Walk across it — the full 1.7 miles takes about 45 minutes each way and the views of the bay, Marin headlands, and city skyline are genuinely unlike anything else. It's rarely as warm as you'd expect; bring a layer.",
+              "emoji": "🌉",
+              "lat": 37.8199,
+              "lng": -122.4783,
+              "place_id": null,
+              "tip": "The south vista point on the SF side has the best photo angle — morning light hits the east face of the bridge."
+            },
+            {
+              "name": "Lands End Trail",
+              "type": "Trail",
+              "rating": 4.8,
+              "reviews": "7,203",
+              "desc": "A 3-mile coastal trail through cypress groves with views of the Golden Gate and the ruins of Sutro Baths at the end. One of the city's best-kept secrets — feels nothing like the urban grid you just left.",
+              "emoji": "🌊",
+              "lat": 37.7793,
+              "lng": -122.5136,
+              "place_id": null,
+              "tip": "Walk to the Sutro Baths ruins at the western end — they're dramatic at dusk with the ocean behind them."
+            }
+          ]
+        },
+        {
+          "label": "Night Out",
+          "night": true,
+          "stops": [
+            {
+              "name": "Zuni Café",
+              "type": "Restaurant",
+              "rating": 4.5,
+              "reviews": "4,822",
+              "desc": "A San Francisco institution since 1979. The whole roasted chicken for two takes 45 minutes and is worth every second — order it the moment you sit down. The Caesar salad is also one of the city's best.",
+              "emoji": "🍗",
+              "lat": 37.7748,
+              "lng": -122.4220,
+              "place_id": null,
+              "tip": "Order the chicken immediately — it takes 45 minutes and you'll want it the moment it arrives."
+            },
+            {
+              "name": "Bi-Rite Creamery",
+              "type": "Ice Cream",
+              "rating": 4.5,
+              "reviews": "6,109",
+              "desc": "Small-batch ice cream made with local ingredients, a block from Dolores Park. The salted caramel and honey lavender are the classics. Lines move fast even when they look long.",
+              "emoji": "🍦",
+              "lat": 37.7614,
+              "lng": -122.4248,
+              "place_id": null,
+              "tip": null
+            }
+          ]
+        }
+      ],
+      "alt": {
+        "label": "Not into hiking?",
+        "text": "Swap Lands End for the <a href=\"https://www.famsf.org/deyoung\">de Young Museum</a> in Golden Gate Park — world-class art collection, free on the first Tuesday of the month, and the observation tower has panoramic city views."
+      }
+    }
+  }
+}

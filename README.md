@@ -2,6 +2,8 @@
 
 A reusable interactive travel itinerary UI. Add a new trip by dropping a JSON file in `trips/` — no code changes needed.
 
+**Live demo:** [sf-itinerary.rohitbernard.com](https://sf-itinerary.rohitbernard.com)
+
 ---
 
 ## Adding a new trip
@@ -13,10 +15,12 @@ A reusable interactive travel itinerary UI. Add a new trip by dropping a JSON fi
 
 ## Local development
 
+An example San Francisco itinerary is included in `examples/sf.json` — no submodule needed.
+
 ```bash
 cd ~/projects/itinerary-template
 python3 -m http.server 8765
-open "http://localhost:8765/?trip=nola"
+open "http://localhost:8765/?trip=sf"
 ```
 
 `config.js` is gitignored — create it locally with your API key:
