@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Itinerary</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #1a1a1a;
+    color: #e8e8e8;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #111;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    flex-shrink: 0;
+  }
+
+  .header-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #C9A84C, #8B5E1A);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+
+  .header-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  .header-text p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 300;
+    margin-top: 1px;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .app {
+    display: grid;
+    grid-template:
+      "header header" auto
+      "tabs   map"    auto
+      "panel  map"    1fr
+      / 480px 1fr;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  .header { grid-area: header; }
+
+  /* ── LEFT PANEL ── */
+  .panel {
+    grid-area: panel;
+    background: #1c1c1e;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Day tabs */
+  .day-tabs {
+    grid-area: tabs;
+    display: flex;
+    gap: 8px;
+    padding: 14px 16px;
+    background: #1c1c1e;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    border-right: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+  }
+
+  .map-sticky { grid-area: map; }
+  #map { height: 100%; }
+
+  .day-tab {
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.5);
+  }
+
+  .day-tab.active {
+    background: #fff;
+    color: #111;
+  }
+
+  /* Day info bar */
+  .day-info {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    flex-shrink: 0;
+  }
+
+  .day-info-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 4px;
+  }
+
+  .day-info-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .day-info-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.55;
+    font-weight: 300;
+  }
+
+  .day-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .btn-route {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #fff;
+    color: #111;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: opacity 0.15s;
+  }
+
+  .btn-route:hover { opacity: 0.88; }
+
+  /* Stops list */
+  .stops-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0 20px;
+  }
+
+  .stops-list::-webkit-scrollbar { width: 4px; }
+  .stops-list::-webkit-scrollbar-track { background: transparent; }
+  .stops-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+  /* Section label */
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.05em;
+    padding: 12px 18px 6px;
+  }
+
+  /* Stop card */
+  .stop-card {
+    display: flex;
+    gap: 12px;
+    padding: 12px 18px;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .stop-card:hover { background: rgba(255,255,255,0.04); }
+  .stop-card.active { background: rgba(255,255,255,0.07); }
+
+  .stop-card.active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: #C9A84C;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .stop-photo-placeholder {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    background: #2a2a2a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  .stop-body { flex: 1; min-width: 0; }
+
+  .stop-tip {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 11.5px;
+    color: #C9A84C;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .stop-tip::before {
+    content: '→ ';
+    font-style: normal;
+  }
+
+  .stop-maps-link {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.55);
+    text-decoration: underline;
+    text-decoration-color: rgba(255,255,255,0.35);
+    text-underline-offset: 2px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .stop-maps-link:hover { color: rgba(255,255,255,0.9); }
+
+  .stop-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+  }
+
+  .stop-meta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 4px;
+  }
+
+  .stop-stars { color: #FBBC04; font-size: 11px; }
+
+  .stop-desc {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* Night stop variant */
+  .stop-card.night .stop-name { color: #E8C97A; }
+  .stop-card.night .stop-time { color: #C9A84C; }
+
+  /* Alt block */
+  .alt-card {
+    margin: 4px 18px 8px;
+    background: rgba(74,94,74,0.2);
+    border: 1px solid rgba(74,94,74,0.35);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  .alt-card-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7ab87a;
+    margin-bottom: 5px;
+  }
+
+  .alt-card p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.55;
+    font-weight: 300;
+  }
+
+  .alt-card a { color: #7ab87a; text-decoration: underline; text-decoration-color: rgba(122,184,122,0.35); }
+
+  /* ── ERROR STATE ── */
+  .error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    padding: 40px;
+  }
+
+  .error-state h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .error-state p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+  }
+
+  .error-state code {
+    background: rgba(255,255,255,0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 700px) {
+    html, body { height: 100dvh; overflow: hidden; background: #1c1c1e; }
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .header { padding: 14px 16px; flex-shrink: 0; }
+
+    .map-sticky {
+      height: 240px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .day-tabs {
+      position: sticky;
+      top: 240px;
+      z-index: 11;
+      border-right: none;
+    }
+
+    #map { height: 100%; }
+
+    .panel {
+      width: 100%;
+      height: auto;
+      max-height: none;
+      overflow: visible;
+      border-right: none;
+    }
+
+    .stops-list { overflow-y: visible; padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+
+    .day-info { padding: 14px 16px 12px; }
+    .day-info-title { font-size: 20px; }
+
+    .stop-card { padding: 10px 16px; gap: 10px; }
+    .stop-photo-placeholder { width: 48px; height: 48px; font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="error-state" style="display:none">
+  <div class="error-state">
+    <h2>Trip not found</h2>
+    <p id="error-message">No trip specified. Try <code>?trip=nola</code></p>
+  </div>
+</div>
+
+<div class="app" id="app" style="display:none">
+
+  <div class="header">
+    <div class="header-icon" id="header-icon"></div>
+    <div class="header-text">
+      <h1 id="header-title"></h1>
+      <p id="header-subtitle"></p>
+    </div>
+  </div>
+
+  <div class="map-sticky">
+    <div id="map"></div>
+  </div>
+
+  <div class="day-tabs" id="day-tabs"></div>
+
+  <div class="panel">
+    <div class="day-info" id="day-info"></div>
+    <div class="stops-list" id="stops-list"></div>
+  </div>
+
+</div>
+
+<script src="config.js"></script>
+<script>
+let DAYS = {};
+let map, markers = [], infoWindows = [], currentDay = 1;
+
+function renderStars(rating) {
+  if (!rating) return '';
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.5;
+  let s = '';
+  for (let i = 0; i < full; i++) s += '★';
+  if (half) s += '½';
+  return s;
+}
+
+function switchDay(day) {
+  currentDay = day;
+  document.querySelectorAll('.day-tab').forEach(t => {
+    t.classList.toggle('active', Number(t.dataset.day) === day);
+  });
+  renderPanel();
+  flyToDay();
+}
+
+function flyToDay() {
+  if (!map) return;
+  const d = DAYS[currentDay];
+  map.panTo(d.center);
+  map.setZoom(d.zoom);
+  markers.forEach(m => m.setMap(null));
+  markers = [];
+  infoWindows.forEach(iw => iw.close());
+  infoWindows = [];
+  plotDay(currentDay);
+}
+
+function renderPanel() {
+  const d = DAYS[currentDay];
+
+  document.getElementById('day-info').innerHTML = `
+    <div class="day-info-label">${d.label}</div>
+    <div class="day-info-title">${d.title}</div>
+    <div class="day-info-desc">${d.desc}</div>
+    <div class="day-actions">
+      <button class="btn-route" onclick="window.open('${d.routeUrl}','_blank')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L19 9H14V22H10V9H5L12 2Z"/></svg>
+        Open route
+      </button>
+    </div>
+  `;
+
+  let html = '';
+  d.sections.forEach(sec => {
+    html += `<div class="section-label">${sec.label}</div>`;
+    sec.stops.forEach(stop => {
+      const nightClass = sec.night ? ' night' : '';
+      const stars = renderStars(stop.rating);
+      const meta = stop.rating
+        ? `<span class="stop-stars">${stars}</span> ${stop.rating} (${stop.reviews}) · ${stop.type}`
+        : stop.type;
+
+      const mapsUrl = stop.place_id
+        ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stop.name)}&query_place_id=${stop.place_id}`
+        : `https://maps.google.com/?q=${stop.lat},${stop.lng}`;
+
+      html += `
+        <div class="stop-card${nightClass}" onclick="focusStop(${stop.lat},${stop.lng},'${stop.name.replace(/'/g,"\\'")}')">
+          <div class="stop-photo-placeholder">${stop.emoji}</div>
+          <div class="stop-body">
+            <div class="stop-name">${stop.name}</div>
+            <div class="stop-meta">${meta}</div>
+            <div class="stop-desc">${stop.desc}</div>
+            ${stop.tip ? `<div class="stop-tip">${stop.tip}</div>` : ''}
+            <a class="stop-maps-link" href="${mapsUrl}" target="_blank" onclick="event.stopPropagation()">Open in Maps ↗</a>
+          </div>
+        </div>
+      `;
+    });
+  });
+
+  if (d.alt) {
+    html += `
+      <div class="alt-card">
+        <div class="alt-card-label">${d.alt.label}</div>
+        <p>${d.alt.text}</p>
+      </div>
+    `;
+  }
+
+  document.getElementById('stops-list').innerHTML = html;
+}
+
+function focusStop(lat, lng, name) {
+  if (!map) return;
+  map.panTo({ lat, lng });
+  map.setZoom(17);
+  markers.forEach(m => {
+    if (m.title === name) {
+      google.maps.event.trigger(m, 'click');
+    }
+  });
+}
+
+function plotDay(day) {
+  const d = DAYS[day];
+
+  d.sections.forEach(sec => {
+    let idx = 0;
+    sec.stops.forEach(stop => {
+      const marker = new google.maps.Marker({
+        position: { lat: stop.lat, lng: stop.lng },
+        map,
+        title: stop.name,
+        label: {
+          text: String(++idx),
+          color: '#111',
+          fontFamily: 'Inter, sans-serif',
+          fontWeight: '700',
+          fontSize: '12px',
+        },
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          fillColor: sec.night ? '#C9A84C' : '#fff',
+          fillOpacity: 1,
+          strokeColor: sec.night ? '#8B5E1A' : '#ccc',
+          strokeWeight: 1.5,
+          scale: 16,
+        }
+      });
+
+      const iw = new google.maps.InfoWindow({
+        content: `
+          <div style="font-family:Inter,sans-serif;padding:4px;max-width:200px">
+            <div style="font-weight:700;font-size:14px;color:#111;margin-bottom:3px">${stop.name}</div>
+            ${stop.rating ? `<div style="font-size:12px;color:#555;margin-bottom:4px">⭐ ${stop.rating} (${stop.reviews})</div>` : ''}
+            <div style="font-size:12px;color:#444;line-height:1.5">${stop.desc}</div>
+            ${stop.place_id ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stop.name)}&query_place_id=${stop.place_id}" target="_blank" style="display:inline-block;margin-top:6px;font-size:12px;color:#1a73e8;font-weight:600">Open in Maps →</a>` : ''}
+          </div>
+        `
+      });
+
+      marker.addListener('click', () => {
+        infoWindows.forEach(w => w.close());
+        iw.open(map, marker);
+      });
+
+      markers.push(marker);
+      infoWindows.push(iw);
+    });
+  });
+}
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: DAYS[currentDay].center,
+    zoom: DAYS[currentDay].zoom,
+    disableDefaultUI: false,
+    styles: [
+      { elementType: 'geometry', stylers: [{ color: '#212121' }] },
+      { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
+      { elementType: 'labels.text.fill', stylers: [{ color: '#757575' }] },
+      { elementType: 'labels.text.stroke', stylers: [{ color: '#212121' }] },
+      { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#757575' }] },
+      { featureType: 'administrative.country', elementType: 'labels.text.fill', stylers: [{ color: '#9e9e9e' }] },
+      { featureType: 'administrative.land_parcel', stylers: [{ visibility: 'off' }] },
+      { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#bdbdbd' }] },
+      { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#757575' }] },
+      { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#181818' }] },
+      { featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{ color: '#616161' }] },
+      { featureType: 'poi.park', elementType: 'labels.text.stroke', stylers: [{ color: '#1b1b1b' }] },
+      { featureType: 'road', elementType: 'geometry.fill', stylers: [{ color: '#2c2c2c' }] },
+      { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#8a8a8a' }] },
+      { featureType: 'road.arterial', elementType: 'geometry', stylers: [{ color: '#373737' }] },
+      { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#3c3c3c' }] },
+      { featureType: 'road.highway.controlled_access', elementType: 'geometry', stylers: [{ color: '#4e4e4e' }] },
+      { featureType: 'road.local', elementType: 'labels.text.fill', stylers: [{ color: '#616161' }] },
+      { featureType: 'transit', elementType: 'labels.text.fill', stylers: [{ color: '#757575' }] },
+      { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#000000' }] },
+      { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#3d3d3d' }] },
+    ]
+  });
+
+  renderPanel();
+  plotDay(currentDay);
+}
+
+function showError(msg) {
+  document.getElementById('error-message').textContent = msg;
+  document.getElementById('error-state').style.display = '';
+}
+
+function init(data) {
+  DAYS = data.days;
+  const meta = data.meta;
+
+  // Populate header
+  document.getElementById('header-icon').textContent = meta.icon;
+  document.getElementById('header-title').textContent = meta.title;
+  document.getElementById('header-subtitle').textContent = meta.subtitle;
+  document.title = meta.title + ' Itinerary';
+
+  // Build day tabs dynamically
+  const tabsEl = document.getElementById('day-tabs');
+  const dayKeys = Object.keys(DAYS).sort((a, b) => a - b);
+  dayKeys.forEach((key, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'day-tab' + (i === 0 ? ' active' : '');
+    btn.textContent = 'Day ' + key;
+    btn.dataset.day = key;
+    btn.onclick = () => switchDay(Number(key));
+    tabsEl.appendChild(btn);
+  });
+
+  currentDay = Number(dayKeys[0]);
+
+  // Show app (removing inline style lets CSS grid/flex take over)
+  document.getElementById('app').style.display = '';
+
+  // Inject Maps API script now that we have the key
+  const script = document.createElement('script');
+  script.src = `https://maps.googleapis.com/maps/api/js?key=${MAPS_API_KEY}&callback=initMap`;
+  script.async = true;
+  script.defer = true;
+  document.body.appendChild(script);
+}
+
+// Bootstrap
+const trip = new URLSearchParams(location.search).get('trip');
+if (!trip) {
+  showError('No trip specified. Try adding ?trip=nola to the URL.');
+} else {
+  fetch(`trips/${trip}.json`)
+    .then(r => {
+      if (!r.ok) throw new Error('not found');
+      return r.json();
+    })
+    .then(init)
+    .catch(() => showError(`Trip "${trip}" not found.`));
+}
+</script>
+
+</body>
+</html>
