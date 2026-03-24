@@ -665,7 +665,7 @@ if (!trip) {
       return r.json();
     })
     .catch(() =>
-      fetch(`example-trips/${trip}.json`)
+      fetch(`example_trips/${trip}.json`)
         .then(r => {
           if (!r.ok) throw new Error('not found');
           return r.json();

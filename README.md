@@ -15,7 +15,7 @@ A reusable interactive travel itinerary UI. Add a new trip by dropping a JSON fi
 
 ## Local development
 
-An example San Francisco itinerary is included in `example-trips/sf.json` — no submodule needed.
+An example San Francisco itinerary is included in `example_trips/sf.json` — no submodule needed.
 
 ```bash
 cd ~/projects/itinerary-template
