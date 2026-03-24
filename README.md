@@ -1,17 +1,22 @@
 # Itinerary Template
 
-A reusable interactive travel itinerary UI. Add a new trip by dropping a JSON file in `trips/` — no code changes needed.
+A reusable interactive travel itinerary UI. Drop a JSON file in `trips/` to add a new trip — no code changes needed.
 
 **Live demo:** [sf-itinerary.rohitbernard.com](https://sf-itinerary.rohitbernard.com)
 
 ---
 
+## How it works
+
+The app reads a `?trip=city` query parameter (or extracts the city name from the subdomain) and fetches `trips/city.json`. If that file isn't found, it falls back to `example_trips/city.json`.
+
+---
+
 ## Adding a new trip
 
-Trip JSON files are loaded from the `trips/` directory. The simplest setup is to drop files directly in `trips/`. If you want to keep your trip data private, point `trips/` at a private repo as a git submodule.
+Place `your-city.json` in the `trips/` directory. If you want to keep trip data private, point `trips/` at a private repo as a git submodule.
 
-1. Create `your-city.json` following the schema below and place it in `trips/`
-2. Open `?trip=your-city` in the browser
+Open `?trip=your-city` in the browser to view it.
 
 ---
 
@@ -25,7 +30,7 @@ python3 -m http.server 8765
 open "http://localhost:8765/?trip=sf"
 ```
 
-`config.js` is gitignored — create it locally with your API key:
+`config.js` is gitignored — create it locally with your Google Maps API key:
 ```bash
 echo "const MAPS_API_KEY = 'YOUR_KEY';" > config.js
 ```
