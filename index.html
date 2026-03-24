@@ -650,7 +650,12 @@ function init(data) {
 }
 
 // Bootstrap
-const trip = new URLSearchParams(location.search).get('trip');
+let trip = new URLSearchParams(location.search).get('trip');
+if (!trip) {
+  // Extract from hostname when served via subdomain (e.g. nola-itinerary.rohitbernard.com)
+  const sub = location.hostname.split('.')[0];
+  if (sub.endsWith('-itinerary')) trip = sub.replace('-itinerary', '');
+}
 if (!trip) {
   showError('No trip specified. Try adding ?trip=nola to the URL.');
 } else {
