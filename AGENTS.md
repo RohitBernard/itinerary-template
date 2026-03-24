@@ -1,58 +1,12 @@
-# Itinerary Template
+# Agent Instructions
 
-A reusable interactive travel itinerary UI. Drop a JSON file in `trips/` to add a new trip — no code changes needed.
+This is a reusable travel itinerary UI. Trip data lives in `trips/` as JSON files — one file per city.
 
-**Live demo:** [sf-itinerary.rohitbernard.com](https://sf-itinerary.rohitbernard.com)
+## Adding a trip
 
----
+When asked to create an itinerary for a city, generate `trips/[city].json` following the schema below. Use `example_trips/sf.json` as a style reference for tone and level of detail.
 
-## How it works
-
-The app reads a `?trip=city` query parameter (or extracts the city name from the subdomain) and fetches `trips/city.json`. If that file isn't found, it falls back to `example_trips/city.json`.
-
----
-
-## Adding a new trip
-
-Place `your-city.json` in the `trips/` directory. If you want to keep trip data private, point `trips/` at a private repo as a git submodule.
-
-Open `?trip=your-city` in the browser to view it.
-
-**With an AI coding assistant (Claude Code, Cursor, Windsurf, etc.):** This repo includes an `AGENTS.md` with the full schema and instructions. Just open the project and say:
-
-> "Add a 2-day Tokyo itinerary"
-
-The agent will generate `trips/tokyo.json` with correct structure and realistic content — no schema knowledge needed.
-
----
-
-## Local development
-
-An example San Francisco itinerary is included in `example_trips/sf.json` — no submodule needed.
-
-```bash
-cd ~/projects/itinerary-template
-python3 -m http.server 8765
-open "http://localhost:8765/?trip=sf"
-```
-
-`config.js` is gitignored — create it locally with your Google Maps API key:
-```bash
-echo "const MAPS_API_KEY = 'YOUR_KEY';" > config.js
-```
-
----
-
-## Deployment
-
-The simplest free option is [Netlify](https://netlify.com):
-1. Connect your GitHub repo
-2. Add `MAPS_API_KEY` as an environment variable
-3. Set build command: `echo "const MAPS_API_KEY = '${MAPS_API_KEY}';" > config.js`
-
-Auto-deploys on every push. Your site will be live at `your-site.netlify.app/?trip=city`.
-
----
+The filename must be lowercase and hyphenated (e.g. `trips/new-york.json`). Do not modify any other files.
 
 ## JSON Schema
 
@@ -108,7 +62,7 @@ Auto-deploys on every push. Your site will be live at `your-site.netlify.app/?tr
 }
 ```
 
-### Field notes
+## Field notes
 
 | Field | Type | Notes |
 |-------|------|-------|
@@ -121,7 +75,3 @@ Auto-deploys on every push. Your site will be live at `your-site.netlify.app/?tr
 | `stop.tip` | string \| null | `null` = no tip shown |
 | `day.alt` | object \| null | `null` = no alternative block shown |
 | `day.alt.text` | string | HTML allowed — use for linking to specific venues |
-
-### Getting a Place ID
-
-Search the place on [Google Maps](https://maps.google.com), click it, then extract the `place_id` from the URL — it starts with `ChIJ`. Or ask an AI: "What is the Google Maps Place ID for [place name, city]?"
